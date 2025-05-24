@@ -2,46 +2,79 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>Home Automation Dashboard</title>
   <style>
+    :root {
+      --primary-color: #4CAF50;
+      --primary-hover: #45a049;
+      --bg-light: #f0f0f0;
+      --bg-dark: #121212;
+      --text-light: #333;
+      --text-dark: #fff;
+      --card-bg-light: rgba(255, 255, 255, 0.9);
+      --card-bg-dark: rgba(30, 30, 30, 0.9);
+      --transition-speed: 0.4s;
+      --pop-scale: 1.1;
+      --pop-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 20px;
       text-align: center;
-      transition: background-color 0.5s, color 0.5s;
+      transition: background-color var(--transition-speed), color var(--transition-speed);
+      min-height: 100vh;
     }
 
     h1 {
       margin-bottom: 20px;
+      font-size: clamp(1.5rem, 5vw, 2rem);
+    }
+
+    h2 {
+      font-size: clamp(1.2rem, 4vw, 1.5rem);
     }
 
     .section {
       opacity: 0;
       visibility: hidden;
+      height: 0;
+      overflow: hidden;
       transition: opacity 0.6s ease, visibility 0.6s ease;
       position: absolute;
-      top: 80px;
+      width: 100%;
       left: 0;
-      right: 0;
-      padding: 20px;
+      padding: 0 20px;
     }
 
     .active {
       opacity: 1;
       visibility: visible;
+      height: auto;
       position: relative;
+      overflow: visible;
     }
 
     .device {
-      background-color: rgba(255, 255, 255, 0.1);
-      margin: 20px auto;
-      padding: 20px;
+      background-color: var(--card-bg-light);
+      margin: 15px auto;
+      padding: 15px;
       border-radius: 10px;
-      width: 350px;
-      transition: background-color 0.3s;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+      transition: all var(--transition-speed);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .dark-mode .device {
+      background-color: var(--card-bg-dark);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
 
     .switch {
@@ -49,6 +82,7 @@
       display: inline-block;
       width: 60px;
       height: 34px;
+      margin: 10px 0;
     }
 
     .switch input {
@@ -65,7 +99,7 @@
       right: 0;
       bottom: 0;
       background-color: #ccc;
-      transition: 0.4s;
+      transition: var(--transition-speed);
       border-radius: 34px;
     }
 
@@ -77,12 +111,12 @@
       left: 4px;
       bottom: 4px;
       background-color: white;
-      transition: 0.4s;
+      transition: var(--transition-speed);
       border-radius: 50%;
     }
 
     input:checked + .slider-toggle {
-      background-color: #4CAF50;
+      background-color: var(--primary-color);
     }
 
     input:checked + .slider-toggle:before {
@@ -90,56 +124,172 @@
     }
 
     .dark-mode {
-      background-color: #121212;
-      color: white;
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
     }
 
     .light-mode {
-      background-color: #f0f0f0;
-      color: black;
+      background-color: var(--bg-light);
+      color: var(--text-light);
     }
 
-    .temp-dial {
-      width: 200px;
-      margin-top: 10px;
-    }
-
-    .blind-slider {
+    .temp-dial, .blind-slider {
       width: 100%;
-      margin: 10px 0;
+      max-width: 300px;
+      margin: 15px 0;
+      -webkit-appearance: none;
+      height: 8px;
+      border-radius: 4px;
+      background: #ddd;
+      outline: none;
     }
 
-    .nav-button {
-      padding: 10px 20px;
-      margin: 10px 5px;
-      border: none;
-      background-color: #4CAF50;
-      color: white;
-      font-size: 16px;
-      border-radius: 5px;
+    .dark-mode .temp-dial, 
+    .dark-mode .blind-slider {
+      background: #555;
+    }
+
+    .temp-dial::-webkit-slider-thumb,
+    .blind-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--primary-color);
       cursor: pointer;
     }
 
+    .temp-dial::-moz-range-thumb,
+    .blind-slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      cursor: pointer;
+    }
+
+    .nav-button {
+      padding: 10px 15px;
+      margin: 5px;
+      border: none;
+      background-color: var(--primary-color);
+      color: white;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color var(--transition-speed);
+    }
+
     .nav-button:hover {
-      background-color: #45a049;
+      background-color: var(--primary-hover);
     }
 
     .project {
       text-align: left;
       max-width: 500px;
-      margin: 0 auto 20px auto;
+      margin: 0 auto 15px auto;
       padding: 15px;
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--card-bg-light);
       border-radius: 10px;
+      transition: all var(--transition-speed);
+    }
+
+    .dark-mode .project {
+      background: var(--card-bg-dark);
     }
 
     .project h3 {
       margin: 0 0 5px 0;
+      font-size: 1.1rem;
     }
 
     .project p {
       margin: 0;
-      font-size: 0.95em;
+      font-size: 0.9rem;
+    }
+
+    .project img {
+      float: left;
+      margin-right: 15px;
+      border-radius: 8px;
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      transition: all 0.3s ease-out;
+      transform-origin: center center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      z-index: 10;
+      position: relative;
+    }
+
+    .project:hover img {
+      transform: scale(var(--pop-scale));
+      box-shadow: var(--pop-shadow);
+      z-index: 20;
+    }
+
+    /* Animation for the pop-out effect */
+    @keyframes pop-out {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+      50% {
+        transform: scale(1.15);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+      }
+      100% {
+        transform: scale(var(--pop-scale));
+        box-shadow: var(--pop-shadow);
+      }
+    }
+
+    .project img:hover {
+      animation: pop-out 0.3s ease-out forwards;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+      
+      .nav-button {
+        padding: 8px 12px;
+        margin: 3px;
+      }
+      
+      .device {
+        padding: 12px;
+        margin: 10px auto;
+      }
+      
+      .project {
+        padding: 12px;
+      }
+      
+      .project img {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+      }
+
+      .project:hover img {
+        transform: scale(1.05);
+      }
+
+      .project img:hover {
+        animation: pop-out 0.3s ease-out forwards;
+        --pop-scale: 1.05;
+        --pop-shadow: 0 5px 10px rgba(0,0,0,0.15);
+      }
+    }
+
+    /* Clearfix for floated images */
+    .clearfix::after {
+      content: "";
+      clear: both;
+      display: table;
     }
   </style>
 </head>
@@ -219,36 +369,33 @@
   </div>
 
   <!-- Portfolio Section -->
-  <h1>Portfolio</h1>
+  <div id="portfolio" class="section">
+    <h1>Portfolio</h1>
 
-<div class="project">
-  <img src="src="images/CuteCat.jpg" alt="Smart Home UI" style="float:left; margin-right:15px; border-radius:8px;">
-  <h3>Smart Home UI</h3>
-  <p>Built a responsive home automation dashboard using HTML, CSS, and JavaScript.</p>
-  <div style="clear:both;"></div>
-</div>
+    <div class="project clearfix">
+      <img src="images/CuteCat.jpg" alt="Smart Home UI">
+      <h3>Smart Home UI</h3>
+      <p>Built a responsive home automation dashboard using HTML, CSS, and JavaScript.</p>
+    </div>
 
-<div class="project">
-  <img src="https://via.placeholder.com/80" alt="IoT Sensor" style="float:left; margin-right:15px; border-radius:8px;">
-  <h3>IoT Sensor Integration</h3>
-  <p>Connected temperature and light sensors to a web dashboard with real-time updates.</p>
-  <div style="clear:both;"></div>
-</div>
+    <div class="project clearfix">
+      <img src="images/CuteCat2.jpg" alt="IoT Sensor">
+      <h3>IoT Sensor Integration</h3>
+      <p>Connected temperature and light sensors to a web dashboard with real-time updates.</p>
+    </div>
 
-<div class="project">
-  <img src="https://via.placeholder.com/80" alt="Voice Assistant" style="float:left; margin-right:15px; border-radius:8px;">
-  <h3>Voice Assistant Skills</h3>
-  <p>Developed Alexa and Google Assistant skills to control smart home devices via voice.</p>
-  <div style="clear:both;"></div>
-</div>
+    <div class="project clearfix">
+      <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="Voice Assistant">
+      <h3>Voice Assistant Skills</h3>
+      <p>Developed Alexa and Google Assistant skills to control smart home devices via voice.</p>
+    </div>
 
-<div class="project">
-  <img src="https://via.placeholder.com/80" alt="React Smart App" style="float:left; margin-right:15px; border-radius:8px;">
-  <h3>React Smart Control App</h3>
-  <p>Created a React PWA to manage home lighting and heating schedules.</p>
-  <div style="clear:both;"></div>
-</div>
-
+    <div class="project clearfix">
+      <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="React Smart App">
+      <h3>React Smart Control App</h3>
+      <p>Created a React PWA to manage home lighting and heating schedules.</p>
+    </div>
+  </div>
 
   <!-- Spare Section -->
   <div id="spare" class="section">
@@ -259,6 +406,14 @@
   </div>
 
   <script>
+    // Centralized slider values
+    const sliderValues = {
+      thermoSlider: 22,
+      blind1: 50,
+      blind2: 75,
+      blind3: 25
+    };
+
     function toggleDevice(elem, name) {
       const state = elem.checked ? "ON" : "OFF";
       console.log(`${name} is now ${state}`);
@@ -270,11 +425,14 @@
     }
 
     function updateThermo(slider) {
+      sliderValues.thermoSlider = slider.value;
       document.getElementById('tempDisplay').innerText = slider.value;
       console.log(`Thermostat set to ${slider.value}°C`);
     }
 
     function logBlind(name, value) {
+      const sliderId = name.toLowerCase().replace(' ', '');
+      sliderValues[sliderId] = value;
       console.log(`${name} set to ${value}% open`);
     }
 
@@ -283,6 +441,14 @@
       sections.forEach(section => section.classList.remove('active'));
       document.getElementById(id).classList.add('active');
     }
+
+    // Initialize sliders with stored values
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('thermoSlider').value = sliderValues.thermoSlider;
+      document.querySelectorAll('.blind-slider')[0].value = sliderValues.blind1;
+      document.querySelectorAll('.blind-slider')[1].value = sliderValues.blind2;
+      document.querySelectorAll('.blind-slider')[2].value = sliderValues.blind3;
+    });
   </script>
 
 </body>
