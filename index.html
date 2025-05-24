@@ -3,64 +3,146 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Home Automation Control Panel</title>
+  <title>Home Automation Dashboard</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
       padding: 20px;
-      background-color: #f4f4f4;
+      margin: 0;
+      transition: background-color 0.5s, color 0.5s;
     }
+
     h1 {
-      color: #333;
+      margin-bottom: 40px;
     }
+
     .device {
+      background-color: rgba(255, 255, 255, 0.1);
       margin: 20px auto;
       padding: 20px;
-      background-color: white;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
       width: 300px;
+      transition: background-color 0.3s;
     }
-    button {
-      margin: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
+
+    .toggle-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
       cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 34px;
     }
-    .on {
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
       background-color: #4CAF50;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    .dark-mode {
+      background-color: #121212;
       color: white;
     }
-    .off {
-      background-color: #f44336;
-      color: white;
+
+    .light-mode {
+      background-color: #f0f0f0;
+      color: black;
     }
   </style>
 </head>
-<body>
+<body class="light-mode">
 
   <h1>Home Automation Control Panel</h1>
 
   <div class="device">
     <h2>Living Room Light</h2>
-    <button class="on" onclick="alert('Living Room Light turned ON')">Turn ON</button>
-    <button class="off" onclick="alert('Living Room Light turned OFF')">Turn OFF</button>
+    <label class="switch">
+      <input type="checkbox" onchange="toggleDevice(this, 'Living Room Light')">
+      <span class="slider"></span>
+    </label>
   </div>
 
   <div class="device">
     <h2>Ceiling Fan</h2>
-    <button class="on" onclick="alert('Fan turned ON')">Turn ON</button>
-    <button class="off" onclick="alert('Fan turned OFF')">Turn OFF</button>
+    <label class="switch">
+      <input type="checkbox" onchange="toggleDevice(this, 'Ceiling Fan')">
+      <span class="slider"></span>
+    </label>
   </div>
 
   <div class="device">
     <h2>Thermostat</h2>
-    <button class="on" onclick="alert('Temperature set to 22°C')">Set 22°C</button>
-    <button class="off" onclick="alert('Temperature set to 18°C')">Set 18°C</button>
+    <label class="switch">
+      <input type="checkbox" onchange="toggleDevice(this, 'Thermostat')">
+      <span class="slider"></span>
+    </label>
   </div>
+
+  <div class="device">
+    <h2>Dark Mode</h2>
+    <label class="switch">
+      <input type="checkbox" id="modeSwitch" onchange="toggleMode(this)">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <script>
+    function toggleDevice(elem, deviceName) {
+      const state = elem.checked ? "ON" : "OFF";
+      console.log(`${deviceName} turned ${state}`);
+    }
+
+    function toggleMode(elem) {
+      const isDark = elem.checked;
+      const body = document.body;
+      if (isDark) {
+        body.classList.remove('light-mode');
+        body.classList.add('dark-mode');
+      } else {
+        body.classList.remove('dark-mode');
+        body.classList.add('light-mode');
+      }
+    }
+  </script>
 
 </body>
 </html>
