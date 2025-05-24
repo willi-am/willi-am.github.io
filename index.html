@@ -221,6 +221,7 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       z-index: 10;
       position: relative;
+      cursor: pointer;
     }
 
     .project:hover img {
@@ -247,6 +248,89 @@
 
     .project img:hover {
       animation: pop-out 0.3s ease-out forwards;
+    }
+
+    /* Lightbox styles */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .lightbox.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .lightbox-content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .lightbox-images {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .lightbox-images img {
+      max-width: 200px;
+      max-height: 200px;
+      border-radius: 8px;
+      object-fit: cover;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .lightbox-images img:hover {
+      transform: scale(1.05);
+    }
+
+    .lightbox-title {
+      color: white;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+    }
+
+    .close-lightbox {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 35px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .close-lightbox:hover {
+      color: var(--primary-color);
+    }
+
+    @media (max-width: 768px) {
+      .lightbox-images {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .lightbox-images img {
+        max-width: 80%;
+      }
     }
 
     @media (max-width: 480px) {
@@ -282,6 +366,10 @@
         animation: pop-out 0.3s ease-out forwards;
         --pop-scale: 1.05;
         --pop-shadow: 0 5px 10px rgba(0,0,0,0.15);
+      }
+
+      .lightbox-images img {
+        max-width: 90%;
       }
     }
 
@@ -373,25 +461,49 @@
     <h1>Portfolio</h1>
 
     <div class="project clearfix">
-      <img src="images/CuteCat.jpg" alt="Smart Home UI">
+      <img src="images/CuteCat.jpg" 
+           alt="Smart Home UI" 
+           onclick="openLightbox('Smart Home UI', [
+             'images/CuteCat.jpg',
+             'https://images.unsplash.com/photo-1558002038-1055907df827?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
+             'https://images.unsplash.com/photo-1581093450025-7d826d60a9b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'
+           ])">
       <h3>Smart Home UI</h3>
       <p>Built a responsive home automation dashboard using HTML, CSS, and JavaScript.</p>
     </div>
 
     <div class="project clearfix">
-      <img src="images/CuteCat2.jpg" alt="IoT Sensor">
+      <img src="images/CuteCat2.jpg" 
+           alt="IoT Sensor" 
+           onclick="openLightbox('IoT Sensor Integration', [
+             'images/CuteCat2.jpg',
+             'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
+             'https://images.unsplash.com/photo-1551269901-5c5e14c25df7?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'
+           ])">
       <h3>IoT Sensor Integration</h3>
       <p>Connected temperature and light sensors to a web dashboard with real-time updates.</p>
     </div>
 
     <div class="project clearfix">
-      <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="Voice Assistant">
+      <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" 
+           alt="Voice Assistant" 
+           onclick="openLightbox('Voice Assistant Skills', [
+             'https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
+             'https://images.unsplash.com/photo-1544396821-4dd40b938ad3?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
+             'https://images.unsplash.com/photo-1547721064-da6cfb341d50?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'
+           ])">
       <h3>Voice Assistant Skills</h3>
       <p>Developed Alexa and Google Assistant skills to control smart home devices via voice.</p>
     </div>
 
     <div class="project clearfix">
-      <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="React Smart App">
+      <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" 
+           alt="React Smart App" 
+           onclick="openLightbox('React Smart Control App', [
+             'https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
+             'https://images.unsplash.com/photo-1627398242454-45a1465e2477?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
+             'https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'
+           ])">
       <h3>React Smart Control App</h3>
       <p>Created a React PWA to manage home lighting and heating schedules.</p>
     </div>
@@ -402,6 +514,17 @@
     <h1>Spare Page</h1>
     <div class="device">
       <p>This is a placeholder page. You can use it for additional features, future projects, or notes.</p>
+    </div>
+  </div>
+
+  <!-- Lightbox Popup -->
+  <div id="lightbox" class="lightbox">
+    <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
+    <div class="lightbox-content">
+      <h2 class="lightbox-title" id="lightbox-title">Project Title</h2>
+      <div class="lightbox-images" id="lightbox-images">
+        <!-- Images will be inserted here by JavaScript -->
+      </div>
     </div>
   </div>
 
@@ -441,6 +564,44 @@
       sections.forEach(section => section.classList.remove('active'));
       document.getElementById(id).classList.add('active');
     }
+
+    // Lightbox functions
+    function openLightbox(title, imageUrls) {
+      const lightbox = document.getElementById('lightbox');
+      const lightboxTitle = document.getElementById('lightbox-title');
+      const lightboxImages = document.getElementById('lightbox-images');
+      
+      // Set title
+      lightboxTitle.textContent = title;
+      
+      // Clear previous images
+      lightboxImages.innerHTML = '';
+      
+      // Add new images
+      imageUrls.forEach(url => {
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = title;
+        lightboxImages.appendChild(img);
+      });
+      
+      // Show lightbox
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden'; // Prevent scrolling
+    }
+
+    function closeLightbox() {
+      const lightbox = document.getElementById('lightbox');
+      lightbox.classList.remove('active');
+      document.body.style.overflow = ''; // Re-enable scrolling
+    }
+
+    // Close lightbox when clicking outside content
+    document.getElementById('lightbox').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeLightbox();
+      }
+    });
 
     // Initialize sliders with stored values
     document.addEventListener('DOMContentLoaded', function() {
