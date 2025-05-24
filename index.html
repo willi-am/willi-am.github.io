@@ -1,8 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home Automation Control Panel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      color: #333;
+    }
+    .device {
+      margin: 20px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 300px;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .on {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .off {
+      background-color: #f44336;
+      color: white;
+    }
+  </style>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
-<p>test site for futire automation io projects</p>
+
+  <h1>Home Automation Control Panel</h1>
+
+  <div class="device">
+    <h2>Living Room Light</h2>
+    <button class="on" onclick="alert('Living Room Light turned ON')">Turn ON</button>
+    <button class="off" onclick="alert('Living Room Light turned OFF')">Turn OFF</button>
+  </div>
+
+  <div class="device">
+    <h2>Ceiling Fan</h2>
+    <button class="on" onclick="alert('Fan turned ON')">Turn ON</button>
+    <button class="off" onclick="alert('Fan turned OFF')">Turn OFF</button>
+  </div>
+
+  <div class="device">
+    <h2>Thermostat</h2>
+    <button class="on" onclick="alert('Temperature set to 22°C')">Set 22°C</button>
+    <button class="off" onclick="alert('Temperature set to 18°C')">Set 18°C</button>
+  </div>
+
 </body>
 </html>
