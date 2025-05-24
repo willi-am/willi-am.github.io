@@ -1,197 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-
-
-
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Home Automation Dashboard</title>
-  
-  
-  <div class="device">
-  <h2>Navigation</h2>
-  <a href="settings.html">
-    <button style="padding: 10px 20px; font-size: 16px; border-radius: 5px;">Go to Settings</button>
-  </a>
-</div>
+  <title>Home Automation SPA</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
       margin: 0;
+      padding: 20px;
+      text-align: center;
       transition: background-color 0.5s, color 0.5s;
     }
 
-    h1 {
-      margin-bottom: 30px;
+    .section {
+      display: none;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .active {
+      display: block;
     }
 
     .device {
-      background-color: rgba(255, 255, 255, 0.1);
-      margin: 20px auto;
+      background-color: #fff;
       padding: 20px;
-      border-radius: 10px;
+      margin: 20px auto;
       width: 350px;
-      transition: background-color 0.3s;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 34px;
-    }
-
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .slider-toggle {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      transition: 0.4s;
-      border-radius: 34px;
-    }
-
-    .slider-toggle:before {
-      position: absolute;
-      content: "";
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      transition: 0.4s;
-      border-radius: 50%;
-    }
-
-    input:checked + .slider-toggle {
+    .nav-button {
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
       background-color: #4CAF50;
-    }
-
-    input:checked + .slider-toggle:before {
-      transform: translateX(26px);
-    }
-
-    .dark-mode {
-      background-color: #121212;
       color: white;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
     }
 
-    .light-mode {
-      background-color: #f0f0f0;
-      color: black;
-    }
-
-    .temp-dial {
-      width: 200px;
-      margin-top: 10px;
-    }
-
-    .blind-slider {
-      width: 100%;
-      margin: 10px 0;
+    .nav-button:hover {
+      background-color: #45a049;
     }
   </style>
 </head>
 <body class="light-mode">
 
-  <h1>Home Automation Control Panel</h1>
-
-  <!-- Living Room Light -->
-  <div class="device">
-    <h2>Living Room Light</h2>
-    <label class="switch">
-      <input type="checkbox" onchange="toggleDevice(this, 'Living Room Light')">
-      <span class="slider-toggle"></span>
-    </label>
+  <!-- Navigation -->
+  <div>
+    <button class="nav-button" onclick="showSection('home')">Home</button>
+    <button class="nav-button" onclick="showSection('settings')">Settings</button>
   </div>
 
-  <!-- Ceiling Fan -->
-  <div class="device">
-    <h2>Ceiling Fan</h2>
-    <label class="switch">
-      <input type="checkbox" onchange="toggleDevice(this, 'Ceiling Fan')">
-      <span class="slider-toggle"></span>
-    </label>
-  </div>
-
-  <!-- Thermostat -->
-  <div class="device">
-    <h2>Thermostat</h2>
-    <input type="range" min="10" max="30" value="22" class="temp-dial" id="thermoSlider" oninput="updateThermo(this)">
-    <p>Temperature: <span id="tempDisplay">22</span>°C</p>
-  </div>
-
-  <!-- Window Blinds -->
-  <div class="device">
-    <h2>Window Blinds</h2>
-    <div>
-      <h4>Blind 1</h4>
-      <label class="switch">
-        <input type="checkbox" onchange="toggleDevice(this, 'Blind 1')">
-        <span class="slider-toggle"></span>
-      </label>
-      <input type="range" min="0" max="100" value="50" class="blind-slider" oninput="logBlind('Blind 1', this.value)">
-    </div>
-
-    <div>
-      <h4>Blind 2</h4>
-      <label class="switch">
-        <input type="checkbox" onchange="toggleDevice(this, 'Blind 2')">
-        <span class="slider-toggle"></span>
-      </label>
-      <input type="range" min="0" max="100" value="75" class="blind-slider" oninput="logBlind('Blind 2', this.value)">
-    </div>
-
-    <div>
-      <h4>Blind 3</h4>
-      <label class="switch">
-        <input type="checkbox" onchange="toggleDevice(this, 'Blind 3')">
-        <span class="slider-toggle"></span>
-      </label>
-      <input type="range" min="0" max="100" value="25" class="blind-slider" oninput="logBlind('Blind 3', this.value)">
+  <!-- Home Section -->
+  <div id="home" class="section active">
+    <h1>Home Automation</h1>
+    <div class="device">
+      <h2>Living Room Light</h2>
+      <button onclick="alert('Light toggled')">Toggle</button>
     </div>
   </div>
 
-  <!-- Dark Mode Toggle -->
-  <div class="device">
-    <h2>Dark Mode</h2>
-    <label class="switch">
-      <input type="checkbox" id="modeSwitch" onchange="toggleMode(this)">
-      <span class="slider-toggle"></span>
-    </label>
+  <!-- Settings Section -->
+  <div id="settings" class="section">
+    <h1>Settings</h1>
+    <div class="device">
+      <p>Device Names, Scheduling, Access Control, etc.</p>
+    </div>
   </div>
 
   <script>
-    function toggleDevice(elem, name) {
-      const state = elem.checked ? "ON" : "OFF";
-      console.log(`${name} is now ${state}`);
-    }
-
-    function toggleMode(elem) {
-      document.body.classList.toggle('dark-mode', elem.checked);
-      document.body.classList.toggle('light-mode', !elem.checked);
-    }
-
-    function updateThermo(slider) {
-      document.getElementById('tempDisplay').innerText = slider.value;
-      console.log(`Thermostat set to ${slider.value}°C`);
-    }
-
-    function logBlind(name, value) {
-      console.log(`${name} set to ${value}% open`);
+    function showSection(id) {
+      const sections = document.querySelectorAll('.section');
+      sections.forEach(section => {
+        section.classList.remove('active');
+      });
+      document.getElementById(id).classList.add('active');
     }
   </script>
 
